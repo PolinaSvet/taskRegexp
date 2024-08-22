@@ -1,0 +1,113 @@
+{{define "content"}}
+
+<h2>Use package regexp to parse the string into a mathematical expression and calculate the result</h2>
+<div class="container">
+    <h3>Input mathematical expression:</h3>
+    
+    <div class="input-output">
+	
+        <textarea id="expLine" placeholder="Enter your mathematical expression here: a+b=?">2+5=?</textarea>
+	    
+        <div>
+		    <div class="buttons">
+			    <button id="calcLine" onclick="sendDataExpLine('POST')">calculate line expression</button>
+		    </div>
+	  
+		    <div class="file-input-container">
+			    <input type="text" id="inputFile-path" class="file-path" placeholder="path to input file" value="./ui/data/input.txt">
+		    </div>
+			<div class="file-input-container">
+				<input type="text" id="outputFile-path" class="file-path" placeholder="path to output file" value="./ui/data/output.txt">
+		    </div>
+		    <div class="buttons">
+			    <button id="calcFile" onclick="sendDataExpFile('POST')">calculate expressions from file to file</button>
+		    </div>
+	    </div>
+	  
+        <textarea id="outResult" placeholder="Result will appear here..." ></textarea>
+    </div>
+
+	<div>
+	 <a class="link">The program does not guarantee the correct result of complex mathematical calculations (intended for testing and parsing regular expressions).</a>
+	 <a href="https://okcalc.com/ru/" target="_blank" class="link">To check the results, you can use the following resource: https://okcalc.com/ru/</a>
+	</div>
+</div>
+
+<script>
+
+	function addToJsonIfTrue(jsonObject,method, key, value, enablevalue) {
+		if (enablevalue) {
+			jsonObject[key] = value;
+		}
+	};
+
+	function sendDataExpLine(method) {
+
+		var formData = {};
+
+		addToJsonIfTrue(formData,method, 'express', document.getElementById("expLine").value, true);
+		
+		fetch('/expLine', 
+		{
+			method: method,
+			headers: {'Content-Type': 'application/json',},
+			body: JSON.stringify(formData),
+		})
+		.then(response => {
+			
+                response.json().then((data) => {
+				const outputText = document.getElementById("outResult");
+
+				var currentDate = new Date();
+				outputText.value += currentDate.toLocaleString() + ":\n";
+
+				Object.entries(data).forEach(([key, value]) => {
+                    outputText.value += value + '\n';
+                });
+            });
+            
+            
+		})
+		.catch((error) => {
+			console.error('Error:', error);
+			alert('Error: ' + error.message);
+		});
+	};
+
+	function sendDataExpFile(method) {
+
+		var formData = {};
+
+		addToJsonIfTrue(formData,method, 'inputFile', document.getElementById("inputFile-path").value, true);
+		addToJsonIfTrue(formData,method, 'outputFile', document.getElementById("outputFile-path").value, true);
+		
+		fetch('/expFile', 
+		{
+			method: method,
+			headers: {'Content-Type': 'application/json',},
+			body: JSON.stringify(formData),
+		})
+		.then(response => {
+			
+                response.json().then((data) => {
+				const outputText = document.getElementById("outResult");
+
+				var currentDate = new Date();
+				outputText.value += currentDate.toLocaleString() + ":\n";
+
+				Object.entries(data).forEach(([key, value]) => {
+                    outputText.value += value + '\n';
+                });
+            });
+            
+            
+		})
+		.catch((error) => {
+			console.error('Error:', error);
+			alert('Error: ' + error.message);
+		});
+	};
+</script>
+
+
+{{end}}
