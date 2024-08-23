@@ -6,20 +6,20 @@ import (
 	"testing"
 )
 
-func Test_calc_calculateLineTwoArg(t *testing.T) {
+func TestCalc_calculateLineTwoArg(t *testing.T) {
 	type args struct {
 		expression []string
 	}
 	tests := []struct {
 		name    string
-		c       *calc
+		c       *Calc
 		args    args
 		want    float64
 		wantErr bool
 	}{
 		{
 			name: "[calculateLineTwoArg]_Good Addition",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				expression: []string{"", "-1", "", "", "+", "9", "", ""},
 			},
@@ -28,7 +28,7 @@ func Test_calc_calculateLineTwoArg(t *testing.T) {
 		},
 		{
 			name: "[calculateLineTwoArg]_Good Subtraction",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				expression: []string{"", "-1", "", "", "-", "9", "", ""},
 			},
@@ -37,7 +37,7 @@ func Test_calc_calculateLineTwoArg(t *testing.T) {
 		},
 		{
 			name: "[calculateLineTwoArg]_Good Multiplication",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				expression: []string{"", "-1", "", "", "*", "9", "", ""},
 			},
@@ -46,7 +46,7 @@ func Test_calc_calculateLineTwoArg(t *testing.T) {
 		},
 		{
 			name: "[calculateLineTwoArg]_Good Division",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				expression: []string{"", "-10", "", "", "/", "2", "", ""},
 			},
@@ -55,7 +55,7 @@ func Test_calc_calculateLineTwoArg(t *testing.T) {
 		},
 		{
 			name: "[calculateLineTwoArg]_Error Division by Zero",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				expression: []string{"", "-1", "", "", "/", "0", "", ""},
 			},
@@ -64,7 +64,7 @@ func Test_calc_calculateLineTwoArg(t *testing.T) {
 		},
 		{
 			name: "[calculateLineTwoArg]_Error Invalid Expression",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				expression: []string{"", "5", "", "+", "3"},
 			},
@@ -73,7 +73,7 @@ func Test_calc_calculateLineTwoArg(t *testing.T) {
 		},
 		{
 			name: "[calculateLineTwoArg]_Error Invalid Operator",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				expression: []string{"", "-1", "", "", "%", "9", "", ""},
 			},
@@ -82,7 +82,7 @@ func Test_calc_calculateLineTwoArg(t *testing.T) {
 		},
 		{
 			name: "[calculateLineTwoArg]_Error Empty list",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				expression: []string{},
 			},
@@ -104,21 +104,21 @@ func Test_calc_calculateLineTwoArg(t *testing.T) {
 	}
 }
 
-func Test_calc_findAllPrior(t *testing.T) {
+func TestCalc_findAllPrior(t *testing.T) {
 	type args struct {
 		input string
 		re    *regexp.Regexp
 	}
 	tests := []struct {
 		name    string
-		c       *calc
+		c       *Calc
 		args    args
 		want    string
 		wantErr bool
 	}{
 		{
 			name: "[findAllPrior]_Good Multiplication get result with ()",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				input: "(+2*+5)",
 				re:    rePriorFirst,
@@ -128,7 +128,7 @@ func Test_calc_findAllPrior(t *testing.T) {
 		},
 		{
 			name: "[findAllPrior]_Good Multiplication get result",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				input: "+2*-5",
 				re:    rePriorFirst,
@@ -138,7 +138,7 @@ func Test_calc_findAllPrior(t *testing.T) {
 		},
 		{
 			name: "[findAllPrior]_Good Add not result return input",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				input: "+2*-5",
 				re:    rePriorSecond,
@@ -148,7 +148,7 @@ func Test_calc_findAllPrior(t *testing.T) {
 		},
 		{
 			name: "[findAllPrior]_Good Multiplication",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				input: "(3+6533.000000*+106.000000)*+10.111109*+1.000000",
 				re:    rePriorFirst,
@@ -158,7 +158,7 @@ func Test_calc_findAllPrior(t *testing.T) {
 		},
 		{
 			name: "[findAllPrior]_Error empty",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				input: "",
 				re:    rePriorSecond,
@@ -181,21 +181,21 @@ func Test_calc_findAllPrior(t *testing.T) {
 	}
 }
 
-func Test_calc_findAllParentheses(t *testing.T) {
+func TestCalc_findAllParentheses(t *testing.T) {
 	type args struct {
 		input string
 		re    *regexp.Regexp
 	}
 	tests := []struct {
 		name    string
-		c       *calc
+		c       *Calc
 		args    args
 		want    string
 		wantErr bool
 	}{
 		{
 			name: "[findAllParentheses]_Good with result with (()*)",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				input: "((+692501.000000)*+10.111109)",
 				re:    reParenthesesStart,
@@ -205,7 +205,7 @@ func Test_calc_findAllParentheses(t *testing.T) {
 		},
 		{
 			name: "[findAllParentheses]_Good with result with ()*",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				input: "(+692501.000000)*+10.111109",
 				re:    reParenthesesStart,
@@ -215,7 +215,7 @@ func Test_calc_findAllParentheses(t *testing.T) {
 		},
 		{
 			name: "[findAllParentheses]_Good without result ()*",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				input: "(+692501.000000)*+10.111109",
 				re:    reParentheses,
@@ -225,7 +225,7 @@ func Test_calc_findAllParentheses(t *testing.T) {
 		},
 		{
 			name: "[findAllParentheses]_Good with result (+(+))*",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				input: "(3+(+6533.000000)*(+106.000000))*(+10.111109)",
 				re:    reParentheses,
@@ -235,7 +235,7 @@ func Test_calc_findAllParentheses(t *testing.T) {
 		},
 		{
 			name: "[findAllParentheses]_Good with result (-(-))*",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				input: "(3-(-6533.000000)*(+106.000000))*(+10.111109)",
 				re:    reParentheses,
@@ -245,7 +245,7 @@ func Test_calc_findAllParentheses(t *testing.T) {
 		},
 		{
 			name: "[findAllParentheses]_Good with result (-(+))*",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				input: "(3-(+6533.000000)*(+106.000000))*(+10.111109)",
 				re:    reParentheses,
@@ -268,20 +268,20 @@ func Test_calc_findAllParentheses(t *testing.T) {
 	}
 }
 
-func Test_calc_calcStepByStep(t *testing.T) {
+func TestCalc_calcStepByStep(t *testing.T) {
 	type args struct {
 		input string
 	}
 	tests := []struct {
 		name    string
-		c       *calc
+		c       *Calc
 		args    args
 		want    string
 		wantErr bool
 	}{
 		{
 			name: "[calcStepByStep]_Good variant 1",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				input: "(5+4)",
 			},
@@ -290,7 +290,7 @@ func Test_calc_calcStepByStep(t *testing.T) {
 		},
 		{
 			name: "[calcStepByStep]_Good variant 2",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				input: "(3+5+6+8+9)",
 			},
@@ -299,7 +299,7 @@ func Test_calc_calcStepByStep(t *testing.T) {
 		},
 		{
 			name: "[calcStepByStep]_Good variant 3",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				input: "(3+(5-(7+1)*-(2+2-8*9)*3*-4)*(4-(-3.0*8.0+7)*6))*(12-8/9*(12+8)+(1*8/9-5+4*5))",
 			},
@@ -308,7 +308,7 @@ func Test_calc_calcStepByStep(t *testing.T) {
 		},
 		{
 			name: "[calcStepByStep]_Error variant 3",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				input: "(((3+5+6+8+9)",
 			},
@@ -317,7 +317,7 @@ func Test_calc_calcStepByStep(t *testing.T) {
 		},
 		{
 			name: "[calcStepByStep]_Error variant 4",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				input: "",
 			},
@@ -339,20 +339,20 @@ func Test_calc_calcStepByStep(t *testing.T) {
 	}
 }
 
-func Test_calc_calcCheckFormat(t *testing.T) {
+func TestCalc_calcCheckFormat(t *testing.T) {
 	type args struct {
 		input string
 	}
 	tests := []struct {
 		name    string
-		c       *calc
+		c       *Calc
 		args    args
 		want    string
 		wantErr bool
 	}{
 		{
 			name: "[calcCheckFormat]_Good variant 1",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				input: "2-4=?",
 			},
@@ -361,7 +361,7 @@ func Test_calc_calcCheckFormat(t *testing.T) {
 		},
 		{
 			name: "[calcCheckFormat]_Good variant 2",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				input: "(3+5+6)=?",
 			},
@@ -370,7 +370,7 @@ func Test_calc_calcCheckFormat(t *testing.T) {
 		},
 		{
 			name: "[calcCheckFormat]_Error variant 1",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				input: "(3+5+6)=",
 			},
@@ -379,7 +379,7 @@ func Test_calc_calcCheckFormat(t *testing.T) {
 		},
 		{
 			name: "[calcCheckFormat]_Error variant 2",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				input: "(3+5a+6)=",
 			},
@@ -388,7 +388,7 @@ func Test_calc_calcCheckFormat(t *testing.T) {
 		},
 		{
 			name: "[calcCheckFormat]_Error variant 3",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				input: "(3+5%6)=?",
 			},
@@ -397,7 +397,7 @@ func Test_calc_calcCheckFormat(t *testing.T) {
 		},
 		{
 			name: "[calcCheckFormat]_Error variant 4",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				input: "",
 			},
@@ -406,7 +406,7 @@ func Test_calc_calcCheckFormat(t *testing.T) {
 		},
 		{
 			name: "[calcCheckFormat]_Error variant 5",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				input: "рпрмтпмр",
 			},
@@ -415,7 +415,7 @@ func Test_calc_calcCheckFormat(t *testing.T) {
 		},
 		{
 			name: "[calcCheckFormat]_Error variant 6",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				input: "=?",
 			},
@@ -437,20 +437,20 @@ func Test_calc_calcCheckFormat(t *testing.T) {
 	}
 }
 
-func Test_calc_Сalculate(t *testing.T) {
+func TestCalc_Сalculate(t *testing.T) {
 	type args struct {
 		inputSlice   []string
 		fullResponse bool
 	}
 	tests := []struct {
 		name string
-		c    *calc
+		c    *Calc
 		args args
 		want []string
 	}{
 		{
 			name: "[Сalculate]_Error variant 1",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				inputSlice:   []string{},
 				fullResponse: false,
@@ -459,7 +459,7 @@ func Test_calc_Сalculate(t *testing.T) {
 		},
 		{
 			name: "[Сalculate]_Good variant 2",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				inputSlice:   []string{"3+5+6+8+9=?"},
 				fullResponse: false,
@@ -468,7 +468,7 @@ func Test_calc_Сalculate(t *testing.T) {
 		},
 		{
 			name: "[Сalculate]_Error variant 3",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				inputSlice:   []string{"9/0"},
 				fullResponse: false,
@@ -477,7 +477,7 @@ func Test_calc_Сalculate(t *testing.T) {
 		},
 		{
 			name: "[Сalculate]_Error variant 4",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				inputSlice:   []string{"9/0=?"},
 				fullResponse: false,
@@ -486,7 +486,7 @@ func Test_calc_Сalculate(t *testing.T) {
 		},
 		{
 			name: "[Сalculate]_Error variant 5",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				inputSlice:   []string{"sVSFv"},
 				fullResponse: true,
@@ -495,12 +495,30 @@ func Test_calc_Сalculate(t *testing.T) {
 		},
 		{
 			name: "[Сalculate]_Good variant 6",
-			c:    &calc{},
+			c:    &Calc{},
 			args: args{
 				inputSlice:   []string{"(3+(5-(7+1)*-(2+2-8*9)*3*-4)*(4-(-3.0*8.0+7)*6))*(12-8/9*(12+8)+(1*8/9-5+4*5))=?"},
 				fullResponse: true,
 			},
 			want: []string{"(3+(5-(7+1)*-(2+2-8*9)*3*-4)*(4-(-3.0*8.0+7)*6))*(12-8/9*(12+8)+(1*8/9-5+4*5))=7001953.093609"},
+		},
+		{
+			name: "[Сalculate]_Good variant 7",
+			c:    &Calc{},
+			args: args{
+				inputSlice:   []string{"(3+(5-(7+1)*-(2+2-8*9)*3*-4)*(4-(-3.0*8.0+7)*6))*(12-8/9*(12+8)+(1*8/9-5+4*5))*(-1)=?"},
+				fullResponse: true,
+			},
+			want: []string{"(3+(5-(7+1)*-(2+2-8*9)*3*-4)*(4-(-3.0*8.0+7)*6))*(12-8/9*(12+8)+(1*8/9-5+4*5))*(-1)=-7001953.093609"},
+		},
+		{
+			name: "[Сalculate]_Good variant 8",
+			c:    &Calc{},
+			args: args{
+				inputSlice:   []string{"(-1)*+8.000000=?"},
+				fullResponse: true,
+			},
+			want: []string{"(-1)*+8.000000=-8"},
 		},
 	}
 	for _, tt := range tests {

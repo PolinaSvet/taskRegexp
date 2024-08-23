@@ -147,23 +147,38 @@ func (c *Calc) findAllParentheses(input string, re *regexp.Regexp) (string, erro
 	}
 	//разбираем данные согласно группе захвата
 	for _, expression := range expressions {
-		val, err := strconv.ParseFloat(expression[4], 64)
+		val, err := strconv.ParseFloat("0", 64)
 		if err != nil {
 			return "", err
 		}
-		if expression[0][:3] == "-(+" || expression[0][:3] == "+(-" {
-			val *= -1
-		}
-		if expression[0][:1] == "*" || expression[0][:1] == "/" {
-			expressionsSliceZnBefore = append(expressionsSliceZnBefore, expression[0][:1])
-			expressionsSliceZnAfter = append(expressionsSliceZnAfter, "")
-		} else if expression[0][:1] == "(" {
-			val, err = strconv.ParseFloat(expression[3], 64)
-			expressionsSliceZnBefore = append(expressionsSliceZnBefore, "")
-			expressionsSliceZnAfter = append(expressionsSliceZnAfter, expression[0][len(expression[0])-1:])
+		if expression[0][:3] == "-(-" || expression[0][:3] == "+(+" {
+			val, err = strconv.ParseFloat(expression[4], 64)
 			if err != nil {
 				return "", err
 			}
+		}
+		if expression[0][:3] == "-(+" || expression[0][:3] == "+(-" {
+			val, err = strconv.ParseFloat(expression[4], 64)
+			if err != nil {
+				return "", err
+			}
+			val *= -1
+		}
+		if expression[0][:1] == "*" || expression[0][:1] == "/" {
+			val, err = strconv.ParseFloat(expression[3][:len(expression[3])-1], 64)
+			if err != nil {
+				return "", err
+			}
+			expressionsSliceZnBefore = append(expressionsSliceZnBefore, expression[0][:1])
+			expressionsSliceZnAfter = append(expressionsSliceZnAfter, "")
+		} else if expression[0][:1] == "(" {
+			val, err = strconv.ParseFloat(expression[2][:len(expression[2])-1], 64)
+			if err != nil {
+				return "", err
+			}
+			expressionsSliceZnBefore = append(expressionsSliceZnBefore, "")
+			expressionsSliceZnAfter = append(expressionsSliceZnAfter, expression[0][len(expression[0])-1:])
+
 		} else {
 			expressionsSliceZnBefore = append(expressionsSliceZnBefore, "")
 			expressionsSliceZnAfter = append(expressionsSliceZnAfter, "")
@@ -178,7 +193,7 @@ func (c *Calc) findAllParentheses(input string, re *regexp.Regexp) (string, erro
 		}
 		expressionsRet += expressionPlace + express
 	}
-	//fmt.Println("findAllParentheses", input, "->", expressionsRet)
+	//fmt.Printf("3: %#v->%#v->\n", input, expressionsRet)
 	return c.findAllParentheses(expressionsRet, re)
 }
 
